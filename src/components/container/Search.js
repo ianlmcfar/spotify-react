@@ -3,30 +3,36 @@
 
 import React, { Component } from 'react';
 import underscore from 'underscore';
-import ArtistSearch from './ArtistSearch';
-import AlbumSearch from './AlbumSearch';
-import TrackSearch from './TrackSearch';
-import SearchResults from './SearchResults';
-import {SearchRequest, GeoRequest, AlbumRequest, AlbumTrackRequest, AnalysisRequest} from '../other/Requests';
 
+import ArtistSearch from '../presentation/ArtistSearch';
+import AlbumSearch from '../presentation/AlbumSearch';
+import TrackSearch from '../presentation/TrackSearch';
+import SearchResults from '../presentation/SearchResults';
+import {SearchRequest, GeoRequest, AlbumRequest, AlbumTrackRequest, AnalysisRequest} from '../../other/Requests';
+
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+
+import * as searchActions from '../../actions/search';
 
 class Search extends Component {
 	constructor(props) {
 	    super(props);
-	    this.state = {artistarray: [],
-						albumarray: [],
-						trackarray: [],
-						arrayObj: [],
-						index: -1,
-						typeindex: -1,
-						selectedelement: '',
-						userinput: '',
-						showlist: {artists: false, albums: false, tracks: false},
-						albumobject: '',
-						returnobject: '',
-						market: '',
-						type: 'artist',
-						searched: false};
+	    this.state = {// artistarray: [],
+// 						albumarray: [],
+// 						trackarray: [],
+// 						arrayObj: [],
+// 						index: -1,
+// 						typeindex: -1,
+// 						selectedelement: '',
+// 						userinput: '',
+// 						showlist: {artists: false, albums: false, tracks: false},
+// 						albumobject: '',
+// 						returnobject: '',
+// 						market: '',
+// 						type: 'artist',
+// 						searched: false
+		};
 		this.handleChange = this.handleChange.bind(this);
 		this.getAnalysis = underscore.debounce(this.getAnalysis, 100);
 		this.makSearch = underscore.debounce(this.makeSearch,200);
@@ -39,7 +45,6 @@ class Search extends Component {
 		this.makeSearch();
 	}
 	makeSearch(){
-		
 		if (this.refs.input.value !== ''){ 
 			var input = this.refs.input.value.replace("' '",'+');
 			SearchRequest(input,response => this.setState({
