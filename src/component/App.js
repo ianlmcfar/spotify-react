@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import Search from './Search';
+import store from '../other/store';
 
 class App extends Component {
 	constructor(props){
@@ -36,7 +37,7 @@ class App extends Component {
 		return(
 			<div>
 				<div className='search'>
-					<Search authcode={this.state.authcode} onRequest={this.handleAlbumRequest}/>
+					<Search authcode={this.state.authcode} onRequest={this.handleAlbumRequest} store={store}/>
 				</div>
 
 			</div>

@@ -2,6 +2,8 @@
 //Is parent for Artist and SearchResults//
 
 import React, { Component } from 'react';
+import {observer} from 'mobx-react';
+
 import underscore from 'underscore';
 import ArtistSearch from './ArtistSearch';
 import AlbumSearch from './AlbumSearch';
@@ -9,24 +11,9 @@ import TrackSearch from './TrackSearch';
 import SearchResults from './SearchResults';
 import {SearchRequest, GeoRequest, AlbumRequest, AlbumTrackRequest, AnalysisRequest} from '../other/Requests';
 
-
-class Search extends Component {
+@observer class Search extends Component {
 	constructor(props) {
 	    super(props);
-	    this.state = {artistarray: [],
-						albumarray: [],
-						trackarray: [],
-						arrayObj: [],
-						index: -1,
-						typeindex: -1,
-						selectedelement: '',
-						userinput: '',
-						showlist: {artists: false, albums: false, tracks: false},
-						albumobject: '',
-						returnobject: '',
-						market: '',
-						type: 'artist',
-						searched: false};
 		this.handleChange = this.handleChange.bind(this);
 		this.getAnalysis = underscore.debounce(this.getAnalysis, 100);
 		this.makSearch = underscore.debounce(this.makeSearch,200);
@@ -35,7 +22,7 @@ class Search extends Component {
 		// this.getAlbums	= this.getAlbums.bind(this);
 	}
 	handleChange(event){
-		this.setState({userinput: event.target.value}); //control user input
+		this.props.store.input = event.target.value; //control user input
 		this.makeSearch();
 	}
 	makeSearch(){
@@ -58,7 +45,6 @@ class Search extends Component {
 							response.data[property].items.length > 0 ? showlist[property] = true : showlist[property] = false;
 	    				}
 					}
-					console.log(showlist);
 					return showlist;
 				})()
 			}));
@@ -177,7 +163,7 @@ class Search extends Component {
 		return (
 			<div className='searchcontainer'>
 				<div className='searchbox'>
-					<input type='text' ref='input'  value={this.state.userinput} onChange={this.handleChange} onKeyDown={this.handleKeyDown}/>
+					<input type='text' ref='input'  value={this.props.store.input} onChange={this.handleChange} onKeyDown={this.handleKeyDown}/>
 				</div>
 				<div className='searchresults'>
 					{artistlist}

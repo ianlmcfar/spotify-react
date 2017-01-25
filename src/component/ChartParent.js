@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import d3 from 'd3';
+// import d3 from 'd3';
+import * as d3 from "d3";
 import mathjs from 'mathjs';
 
 function average(segments){
@@ -88,7 +89,7 @@ class ChartParent extends Component {
 		var group = svg.append('g')
 			.attr("width", "1000").attr("height", '500');
 
-		var arc = d3.svg.arc()
+		var arc = d3.arc()
 		    .innerRadius(function(d) {return d.outerradius-d.weight})
 		    .outerRadius(function(d) {return d.outerradius})
 		    .startAngle(0) //radians

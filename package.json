@@ -6,15 +6,33 @@
     "react-scripts": "0.7.0"
   },
   "dependencies": {
-    "react": "^15.4.0",
+    "axios": "^0.15.3",
+    "d3": "^4.4.4",
+    "mathjs": "^3.9.0",
+    "mobx": "^3.0.2",
+    "mobx-react": "^4.1.0",
+    "react": "^15.4.2",
     "react-debounce-input": "^2.4.2",
-    "react-dom": "^15.4.0",
-    "react-redux": "^5.0.2"
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.2",
+    "underscore": "^1.8.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ianlmcfar/spotify-react.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ianlmcfar/spotify-react/issues"
+  },
+  "homepage": "https://github.com/ianlmcfar/spotify-react#readme"
 }
