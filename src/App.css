@@ -1,0 +1,46 @@
+.searchcontainer{
+  width: 35%;
+  margin: 20;
+}
+input {
+	width: 75%;
+}
+
+.artistinput{
+    width: 100%;
+    padding: 10px;
+    font-size: 12px;
+}
+.list{
+  padding: 0;
+  width: 75%;
+  list-style: none;
+  z-index:1;
+  background-color: white;
+}
+
+.name{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    font-family: sans-serif;
+    width: 100%;
+    padding: 5px;
+    border-bottom: 1px dotted #808080;
+	
+    font-size: 10px;
+    font-weight: bold;
+}
+.searchresuts{
+	overflow: scroll;
+	position: absolute;
+	z-index: 2;
+}
+.search{
+	z-index: 1;
+}

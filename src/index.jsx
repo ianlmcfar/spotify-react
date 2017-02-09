@@ -1,27 +1,27 @@
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import AppState from './AppState';
-import App from './App';
+import {Provider} from 'mobx-react';
+import dataStore from './store/dataStore';
+import App from './component/App';
+import Results from './component/Results';
 
-const appState = new AppState();
+import { RouterStore, syncHistoryWithStore } from 'mobx-react-router';
+import { Router, Route, browserHistory } from 'react-router';
 
-render(
-  <AppContainer>
-    <App appState={appState} />
-  </AppContainer>,
+const routingStore = new RouterStore();
+
+const history = syncHistoryWithStore(browserHistory, routingStore);
+
+ReactDOM.render(
+	<AppContainer>
+		<Provider dataStore={dataStore} routingStore={routingStore}>
+			<Router history={history}>
+				<Route path='/' component={App} />
+				<Route path='/results' component={Results} />
+			</Router>
+		</Provider>
+	</AppContainer>,
   document.getElementById('root')
 );
 
-if (module.hot) {
-  module.hot.accept('./App', () => {
-    const NextApp = require('./App').default;
-
-    render(
-      <AppContainer>
-        <NextApp appState={appState} />
-      </AppContainer>,
-      document.getElementById('root')
-    );
-  });
-}
