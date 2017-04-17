@@ -9,13 +9,15 @@ module.exports = {
     'webpack/hot/only-dev-server',
     './src/index'
   ],
+  
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
     publicPath: '/static/'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+	  
+	  new webpack.HotModuleReplacementPlugin()
   ],
   resolve: {
     extensions: ['', '.js', '.jsx']

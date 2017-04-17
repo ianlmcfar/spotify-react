@@ -20,7 +20,7 @@ window.onload = () => {
 		if (window.location.href === 'http://localhost:3000/' && document.cookie.indexOf('access_token') === -1){
 			var clientstate = Math.random().toString(36).substring(7);
 			var clientid = '476628e2d36a4316b392f1afcb3b53b1';
-			var redirect='http%3A%2F%2Flocalhost%3A3000%2F%23redirect';
+			var redirect='http%3A%2F%2Flocalhost%3A3000%2F';
 			window.location = `https://accounts.spotify.com/authorize/?client_id=${clientid}&response_type=token&redirect_uri=${redirect}&state=${clientstate}`;
 		}
 		else if (window.location.href.indexOf('access_token=') != -1){
