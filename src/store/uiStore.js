@@ -4,12 +4,6 @@ import dataStore from './dataStore';
 class uiStore {
 	constructor(){
 	}
-	@observable input = ''
-	@observable typeindex = ''
-	@observable searched = ''
-	@observable selecteditem = ''
-	@observable returnObject = ''
-	@observable selectedObject = ''
-
+	@observable showList = {artists: false, albums: false, tracks: false}
 }
 export default uiStore = new uiStore;

@@ -1,12 +1,13 @@
 import { observable, computed } from 'mobx';
 
 class dataStore {
-	@observable input = ''
 	@observable market = ''
+	@observable input = ''
 	@observable responseData = {}
 	@observable returnObject = {}
 	@observable returnType = ''
-	
+	@observable selectedObject = {}
+	@observable analysisObject = {}	
 	constructor(){
 	}
 	@computed get itemArray(){

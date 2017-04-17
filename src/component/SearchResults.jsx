@@ -7,82 +7,100 @@ import Search from './Search';
 import TrackResult from './TrackResult';
 import ChartParent from './ChartParent';
 import {inject, observer} from 'mobx-react';
-import {AnalysisRequest, AlbumTrackRequest} from '../other/Requests';
+import {action} from 'mobx';
+import {SearchRequest, GeoRequest, AlbumRequest, AlbumTrackRequest, AnalysisRequest} from '../other/Requests';
+import injectSheet from 'react-jss';
 
+const styles = {
+	resultsContainer:{
+		marginTop: '50px'
+	},
+	tableBody:{
+		
+	},
+	resultTable:{
+		
+	}
+}
 
-@inject('dataStore') @observer class SearchResults extends Component {
+@injectSheet(styles)
+@inject('dataStore')
+@observer 
+class SearchResults extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
 			trackobject: '',
-			showalbums: true,
-			showtracks: true,
-			selectedalbumid: '',
-			selectedtrackid: '',
-			analysisobject: ''
+			analysisobject: '',
+			type: ''
 			}
-		this.handleAlbumClick = this.handleAlbumClick.bind(this);
-		this.handleTrackClick = this.handleTrackClick.bind(this);
-		this.getTracks = this.getTracks.bind(this);		
+		this.handleItemClick = this.handleItemClick.bind(this);
+		this.getData = this.getData.bind(this);
 	}
-	handleAlbumClick(albumid){
-		this.setState({selectedalbumid: albumid}, () => {this.getTracks();});
-		this.setState({showalbums: false, showtracks: true})
+	componentDidMount(){
+		this.getData(this.props.id, this.props.type2)
 	}
-	handleTrackClick(trackid){
-		this.setState({selectedtrackid: trackid}, () => {AnalysisRequest(this.state.selectedtrackid, this.props.authcode, response => {console.log(response); this.setState({analysisobject: response})} )})
-		this.setState({showtracks: false});
+	componentDidUpdate(prevProps){
+		if (this.props.id != prevProps.id){
+			this.getData(this.props.id, this.props.type2)
+		}
 	}
-
-	handleButtonClick(){
-		//nothing yet, will show more albums, maybe
+	handleItemClick(id, type){
+		this.getData(id, type)
+		
 	}
-	getTracks(){
-		AlbumTrackRequest(this.state.selectedalbumid, response => {this.setState({trackobject: response, showtracks: true});});
+	getData(id, type){
+		console.log(type)
+		GeoRequest(response => {this.props.dataStore.market = response.data.country_code;
+		if (type === 'album'){
+			AlbumRequest([id, this.props.dataStore.market], response => {this.props.dataStore.returnObject = response; console.log(response)});
+		}
+		else if (type === 'track'){
+			AlbumTrackRequest(id, response => {this.props.dataStore.returnObject = response});
+		}
+		
+	})
 	}
 	render(){
-		console.log('resultsrender')
-		var albumlist = this.props.dataStore.returnType === 'album' && this.state.showalbums && this.props.dataStore.returnObject.data ? <ul>
+		const {classes, children} = this.props
+		let albumlist = (this.props.type2 === 'album' && this.props.dataStore.returnObject.data) ?
+		<div className={classes.resultTable}>
+			<div className={classes.tableBody}>
 		{this.props.dataStore.returnObject.data.items.map((album) => {
-										return	<AlbumResult 
-												onSelectClick={this.handleAlbumClick}
+										return	<AlbumResult
+												onSelectClick={this.handleItemClick}
 												albumname={album.name}
-												albumid={album.id}
+												artistname={album.artists[0].name}
+												id={album.id}
 												key={album.id}
+												type1={this.props.type2}
+												type2='track'
 												/>
 											})}
-											</ul> : '';
-		var tracklistsearch = this.props.dataStore.returnType === 'track' && this.state.showtracks && this.props.dataStore.returnObject.data? <ul>
+											</div>
+										</div>: '';
+		var tracklist= this.props.type2 === 'track' && this.props.dataStore.returnObject.data?
+		<div className={classes.resultTable}>
+			<div className={classes.tableBody}>
 		{this.props.dataStore.returnObject.data.items.map((track) => {
 										return <TrackResult
-												onSelectClick={this.handleTrackClick}
+												onSelectClick={this.handleItemClick}
 												trackname={track.name}
-												trackid={track.id}
+												id={track.id}
 												key={track.id}
+												type1={this.props.type2}
+												type2='analysis'
 												/>
 											})}
-											</ul> : '';
-		var tracklistselect = this.state.trackobject && this.state.showtracks ? <ul>
-		{this.state.dataStore.trackobject.data.items.map((track) => {
-										return <TrackResult
-												onSelectClick={this.handleTrackClick}
-												trackname={track.name}
-												trackid={track.id}
-												key={track.id}
-												/>
-											})}
-											</ul> : '';
-		var graphsearch = this.props.dataStore.returnType === 'analysis' ? <ChartParent analysisobject={this.props.dataStore.returnObject}/>: '';
-		var graphselect = this.state.analysisobject ? <ChartParent analysisobject={this.state.analysisobject}/>: '';
-				
+											</div>
+										</div> : '';	
+		var chart = this.props.type2 === 'analysis' ? <ChartParent type1={this.props.type2} id={this.props.id} type2={this.props.type2}/>: '';
 		return(
 			<div>
-				<div className='searchresults'>
+				<div className={classes.resultsContainer} >
 					{albumlist}
-					{tracklistsearch}
-					{tracklistselect}
-					{graphsearch}
-					{graphselect}
+					{tracklist}
+					{chart}
 				</div>
 			</div>
 					
@@ -90,5 +108,3 @@ import {AnalysisRequest, AlbumTrackRequest} from '../other/Requests';
 	}
 }
 export default SearchResults;
-
-//maybe make all analysis requests here instead. need to render chart anyway

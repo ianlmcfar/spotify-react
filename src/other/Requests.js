@@ -1,4 +1,6 @@
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
+	
 
 function SearchRequest(input, callback){
 	axios.get('https://api.spotify.com/v1/search?q='+input+'&type=artist,album,track&limit=5')
@@ -16,6 +18,7 @@ function AlbumRequest(input, callback){
 }
 
 function AnalysisRequest(input, authcode, callback){
+	axiosRetry(axios, { retries: 3 });
 	var authOptions = {
 	    method: 'GET',
 	    url: 'https://api.spotify.com/v1/audio-analysis/'+input,
@@ -24,6 +27,7 @@ function AnalysisRequest(input, authcode, callback){
 	        'Content-Type': 'application/json'
 	    }
 	};
+	console.log(authOptions)
 	axios(authOptions)
 	.then(callback);
 }
