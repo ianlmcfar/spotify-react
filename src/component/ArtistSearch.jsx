@@ -5,7 +5,7 @@ import injectSheet from 'react-jss';
 
 const styles = {
 	itemParent:{
-		fontSize: '14',
+		fontSize: '12pt',
 		color: 'black',
 		height: '40px'
 	},
@@ -27,8 +27,8 @@ const styles = {
 		width: '190'
 	},
 	image:{
-		width: '26',
-		height: '26',
+		width: '26px',
+		height: '26px',
 		margin: '2 2 2 2'
 	}
 }

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
-	
+import {checkAuth} from './checkAuth';
+
 
 function SearchRequest(input, callback){
 	axios.get('https://api.spotify.com/v1/search?q='+input+'&type=artist,album,track&limit=5')
@@ -8,7 +9,7 @@ function SearchRequest(input, callback){
 }
 
 function GeoRequest(callback){
-	axios.get('http://freegeoip.net/json/')
+	axios.get('https://freegeoip.net/json/')
 	.then(callback);
 }
 
@@ -17,17 +18,19 @@ function AlbumRequest(input, callback){
 	.then(callback);
 }
 
-function AnalysisRequest(input, authcode, callback){
+function AnalysisRequest(input, callback){
+	console.log('auth check')
+	checkAuth()
+	const access_token = localStorage.authToken.token
 	axiosRetry(axios, { retries: 3 });
 	var authOptions = {
 	    method: 'GET',
 	    url: 'https://api.spotify.com/v1/audio-analysis/'+input,
 	    headers: {
-	        'Authorization': 'Bearer ' + authcode,
+	        'Authorization': 'Bearer ' + JSON.parse(localStorage.authToken).token,
 	        'Content-Type': 'application/json'
 	    }
 	};
-	console.log(authOptions)
 	axios(authOptions)
 	.then(callback);
 }

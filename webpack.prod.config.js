@@ -4,11 +4,11 @@ var webpack = require('webpack');
 module.exports = {
   devtool: 'source-map',
   entry: [
-    './src/index'
+    './src/index.jsx'
   ],
   
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join('/Users/ian/Documents/personal/dev', 'spotify-react-prod'),
     filename: 'bundle.js',
     publicPath: '/static/'
   },

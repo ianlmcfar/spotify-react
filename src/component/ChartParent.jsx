@@ -114,19 +114,17 @@ function checkBar(segment){
 		this.findSegmentPairs = this.findSegmentPairs.bind(this);
 	}
 	componentDidMount(){
-		const access_token = document.cookie.substring(document.cookie.indexOf('token=')+6)
 		if (this.props.type2 === 'analysis'){
 			this.setState({loading: true}, ()=>{
-				AnalysisRequest(this.props.id, access_token, response => {this.props.dataStore.analysisObject = response; console.log(response); this.setState({loading: false}); this.findSegmentPairs() })
+				AnalysisRequest(this.props.id, response => {this.props.dataStore.analysisObject = response; console.log(response); this.setState({loading: false}); this.findSegmentPairs() })
 			})
 		}
 
 	}
 	componentWillReceiveProps(nextProps){
-		const access_token = document.cookie.substring(document.cookie.indexOf('token=')+6)
 		if (this.props.type2 === 'analysis' && nextProps.type2 == 'analysis'){
 			this.setState({loading: true}, ()=>{
-				AnalysisRequest(this.props.id, access_token, response => {this.props.dataStore.analysisObject = response; console.log(response); this.setState({loading: false}); this.findSegmentPairs() })
+				AnalysisRequest(this.props.id, response => {this.props.dataStore.analysisObject = response; console.log(response); this.setState({loading: false}); this.findSegmentPairs() })
 			})
 		}
 	}

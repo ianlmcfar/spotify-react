@@ -4,12 +4,12 @@ import injectSheet from 'react-jss';
 
 const styles = {
 	itemParent:{
-		fontSize: '14',
+		fontSize: '12pt',
 		color: 'black'
 	},
 	itemChild:{
-		fontSize: '10',
-		margin: '3 0 3 3',
+		fontSize: '7pt',
+		margin: '3px 0px 3px 3px',
 		color: 'gray'
 	},
 	noWrap:{
@@ -18,7 +18,7 @@ const styles = {
 		whiteSpace: 'nowrap'
 	},
 	searchLine:{
-		margin: '2 0 2 0',
+		margin: '2px 0px 2px 0px',
 		height: '40px'
 	},
 	leftCol:{
@@ -27,13 +27,13 @@ const styles = {
 	},
 	rightCol:{
 		float: 'left',
-		margin: '5 0 0 10',
-		width: '190'
+		margin: '0px 0px 0px 10px',
+		width: '190px'
 	},
 	image:{
-		width: '26',
-		height: '26',
-		margin: '2 2 2 2'
+		width: '26px',
+		height: '26px',
+		margin: '2px 2px 2px 2px'
 	}
 }
 

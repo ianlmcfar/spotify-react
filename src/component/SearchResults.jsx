@@ -2,9 +2,9 @@
 //Is parent for Album, Track and LoadMore //
 
 import React, { Component } from 'react';
-import AlbumResult from './AlbumResult';
 import Search from './Search';
-import TrackResult from './TrackResult';
+import AlbumTable from './AlbumTable';
+import TrackTable from './TrackTable';
 import ChartParent from './ChartParent';
 import {inject, observer} from 'mobx-react';
 import {action} from 'mobx';
@@ -14,12 +14,6 @@ import injectSheet from 'react-jss';
 const styles = {
 	resultsContainer:{
 		marginTop: '50px'
-	},
-	tableBody:{
-		
-	},
-	resultTable:{
-		
 	}
 }
 
@@ -50,50 +44,24 @@ class SearchResults extends Component {
 		
 	}
 	getData(id, type){
-		console.log(type)
 		GeoRequest(response => {this.props.dataStore.market = response.data.country_code;
 		if (type === 'album'){
 			AlbumRequest([id, this.props.dataStore.market], response => {this.props.dataStore.returnObject = response; console.log(response)});
 		}
 		else if (type === 'track'){
-			AlbumTrackRequest(id, response => {this.props.dataStore.returnObject = response});
+			AlbumTrackRequest(id, response => {this.props.dataStore.returnObject = response;console.log(response)});
 		}
 		
 	})
 	}
 	render(){
 		const {classes, children} = this.props
-		let albumlist = (this.props.type2 === 'album' && this.props.dataStore.returnObject.data) ?
-		<div className={classes.resultTable}>
-			<div className={classes.tableBody}>
-		{this.props.dataStore.returnObject.data.items.map((album) => {
-										return	<AlbumResult
-												onSelectClick={this.handleItemClick}
-												albumname={album.name}
-												artistname={album.artists[0].name}
-												id={album.id}
-												key={album.id}
-												type1={this.props.type2}
-												type2='track'
-												/>
-											})}
-											</div>
-										</div>: '';
-		var tracklist= this.props.type2 === 'track' && this.props.dataStore.returnObject.data?
-		<div className={classes.resultTable}>
-			<div className={classes.tableBody}>
-		{this.props.dataStore.returnObject.data.items.map((track) => {
-										return <TrackResult
-												onSelectClick={this.handleItemClick}
-												trackname={track.name}
-												id={track.id}
-												key={track.id}
-												type1={this.props.type2}
-												type2='analysis'
-												/>
-											})}
-											</div>
-										</div> : '';	
+		let albumlist = (this.props.type2 === 'album' && this.props.dataStore.returnObject.data) ? 
+		
+		<AlbumTable type2={this.props.type2} handleItemClick={this.handleItemClick} albumObj={this.props.dataStore.returnObject}/> : '';
+		
+		var tracklist= this.props.type2 === 'track' && this.props.dataStore.returnObject.data? <TrackTable type2={this.props.type2} handleItemClick={this.handleItemClick} trackObj={this.props.dataStore.returnObject}/>: '';
+		
 		var chart = this.props.type2 === 'analysis' ? <ChartParent type1={this.props.type2} id={this.props.id} type2={this.props.type2}/>: '';
 		return(
 			<div>

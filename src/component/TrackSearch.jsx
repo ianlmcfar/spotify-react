@@ -4,11 +4,11 @@ import injectSheet from 'react-jss';
 
 const styles = {
 	itemParent:{
-		fontSize: '14',
+		fontSize: '12pt',
 		color: 'black'
 	},
 	itemChild:{
-		fontSize: '10',
+		fontSize: '7pt',
 		margin: '3 0 3 3',
 		color: 'gray'
 	},

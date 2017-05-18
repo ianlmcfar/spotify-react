@@ -9,7 +9,7 @@ import TrackSearch from './TrackSearch';
 import SearchResults from './SearchResults';
 import {SearchRequest, GeoRequest, AlbumRequest, AlbumTrackRequest, AnalysisRequest} from '../other/Requests';
 import injectSheet from 'react-jss';
-import {browserHistory} from 'react-router';
+import {hashHistory} from 'react-router';
 
 const styles = {
 	searchContainer:{
@@ -17,7 +17,7 @@ const styles = {
 		left: '0', top: '0', right: '0', 
 		zIndex: '9999', 
 		width: '250px',
-		margin: '10 0 0 10'
+		margin: '10px 0px 0px 10px'
 	},
 	listContaner:{
 	},
@@ -39,13 +39,13 @@ const styles = {
 	},
 	searchList:{
 		listStyleType: 'none',
-		margin: '0 3 0 10', 
+		margin: '0px 3px 0px 10px', 
 		WebkitPaddingStart: '0',
 		
 	},
 	searchHeader:{
-		margin: '5 3 5 7',
-		fontSize: '18'
+		margin: '5px 3px 5px 7px',
+		fontSize: '18pt'
 	}
 }
 
@@ -98,35 +98,31 @@ function isFalse(item){
 			this.props.uiStore.showList = list;
 	}
 	@action handleKeyDown(event){
-		// const {location, push, goBack } = this.props.routingStore;
-		console.log(this.state.searched)
-		if (true){
-			let index = this.state.index
-			if (event.keyCode === 40 && index < this.props.dataStore.itemArray.length-1) { //downkey
-				index+=1;
-			}
-			else if (event.keyCode === 38  && index > 0){ //upkey
-				index-=1;				
-			}
-			if (event.keyCode === 13 && index > 0){ //enter key
-				this.props.dataStore.selectedObject = this.props.dataStore.itemArray[index]
-				this.props.uiStore.showList = {artists: false, albums: false, tracks: false};
-				let type1 = this.props.dataStore.selectedObject.type, type2
-				switch(type1){
-					case 'artist':
-						type2 = 'album'
-						break;
-					case 'album':
-						type2 = 'track'
-						break;
-					case 'track':
-						type2 = 'analysis'
-						break;
-				}
-				browserHistory.push(`/${this.props.dataStore.selectedObject.type}/${this.props.dataStore.selectedObject.id}/${type2}`);
-			}
-			this.setState({index: index});
+		let index = this.state.index
+		if (event.keyCode === 40 && index < this.props.dataStore.itemArray.length-1) { //downkey
+			index+=1;
 		}
+		else if (event.keyCode === 38  && index > 0){ //upkey
+			index-=1;				
+		}
+		if (event.keyCode === 13 && index > 0){ //enter key
+			this.props.dataStore.selectedObject = this.props.dataStore.itemArray[index]
+			this.props.uiStore.showList = {artists: false, albums: false, tracks: false};
+			let type1 = this.props.dataStore.selectedObject.type, type2
+			switch(type1){
+				case 'artist':
+					type2 = 'album'
+					break;
+				case 'album':
+					type2 = 'track'
+					break;
+				case 'track':
+					type2 = 'analysis'
+					break;
+			}
+			hashHistory.push(`/${this.props.dataStore.selectedObject.type}/${this.props.dataStore.selectedObject.id}/${type2}`);
+		}
+		this.setState({index: index});
 	}
 	@action handleHover(id){
 		this.setState({index: this.props.dataStore.itemArray.map((e)=>{return e.id;}).indexOf(id)});

@@ -31,7 +31,6 @@ const styles = {
 				<WatchClickOutside onClickOutside={this.handleClose}>
 					<Search />
 				</WatchClickOutside>
-
 			</div>
 		);
 	}
