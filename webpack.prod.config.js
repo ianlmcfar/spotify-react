@@ -8,7 +8,7 @@ module.exports = {
   ],
   
   output: {
-    path: path.join('/Users/ian/Documents/personal/dev', 'spotify-react-prod'),
+    path: path.join('/Users/ian/Documents/personal/dev', 'spotifyApp'),
     filename: 'bundle.js',
     publicPath: '/static/'
   },
