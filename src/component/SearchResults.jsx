@@ -60,9 +60,11 @@ class SearchResults extends Component {
 		
 		<AlbumTable type2={this.props.type2} handleItemClick={this.handleItemClick} albumObj={this.props.dataStore.returnObject}/> : '';
 		
-		var tracklist= this.props.type2 === 'track' && this.props.dataStore.returnObject.data? <TrackTable type2={this.props.type2} handleItemClick={this.handleItemClick} trackObj={this.props.dataStore.returnObject}/>: '';
+		var tracklist= this.props.type2 === 'track' && this.props.dataStore.returnObject.data?
+		<TrackTable type2={this.props.type2} handleItemClick={this.handleItemClick} trackObj={this.props.dataStore.returnObject}/>: '';
 		
-		var chart = this.props.type2 === 'analysis' ? <ChartParent type1={this.props.type2} id={this.props.id} type2={this.props.type2}/>: '';
+		var chart = this.props.type2 === 'analysis' ? 
+		<ChartParent type1={this.props.type2} id={this.props.id} type2={this.props.type2}/>: '';
 		return(
 			<div>
 				<div className={classes.resultsContainer} >

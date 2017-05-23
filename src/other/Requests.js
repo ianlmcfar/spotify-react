@@ -18,8 +18,19 @@ function AlbumRequest(input, callback){
 	.then(callback);
 }
 
+function UserTracksRequest (callback){
+	var authOptions = {
+	    method: 'GET',
+	    url: 'https://api.spotify.com/v1/me/top/tracks',
+	    headers: {
+	        'Authorization': 'Bearer ' + JSON.parse(localStorage.authToken).token,
+	        'Content-Type': 'application/json'
+	    }
+	};
+	axios(authOptions).then(callback)
+}
+
 function AnalysisRequest(input, callback){
-	console.log('auth check')
 	checkAuth()
 	const access_token = localStorage.authToken.token
 	axiosRetry(axios, { retries: 3 });
@@ -39,4 +50,4 @@ function AlbumTrackRequest(input, callback){
 	.then(callback);
 }
 
-export {GeoRequest, SearchRequest, AlbumRequest, AnalysisRequest, AlbumTrackRequest}
+export {GeoRequest, SearchRequest, AlbumRequest, AnalysisRequest, AlbumTrackRequest, UserTracksRequest}

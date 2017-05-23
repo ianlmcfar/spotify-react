@@ -29,7 +29,6 @@ class TrackTable extends Component {
 		this.props.handleItemClick(id, type)
 	}
 	render(){
-		console.log(this.props)
 		const {classes, children} = this.props;
 		return(
 			<div className={classes.resultTable}>

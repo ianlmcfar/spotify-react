@@ -1,15 +1,17 @@
 import moment from 'moment';
 
 function checkAuth (){
+	console.log('checkAuth')
 	var targetLocation = encodeURIComponent(window.location.href)
 	// const redirect = 'http://localhost:3000/'
+	const scopes = encodeURIComponent('user-top-read')
 	const redirect = 'https://ianlmcfarlane.github.io/spotifyApp/'
 	const clientState = Math.random().toString(36).substring(7);
 	const clientId = '476628e2d36a4316b392f1afcb3b53b1';
 	
 	if (window.location.href.indexOf('access_token') === -1){
 		if (!localStorage.authToken || moment().isAfter(moment.utc(JSON.parse(localStorage.authToken).expireTime)) ){
-			window.location = `https://accounts.spotify.com/authorize/?client_id=${clientId}&response_type=token&redirect_uri=${redirect}&state=${targetLocation}`
+			window.location = `https://accounts.spotify.com/authorize/?client_id=${clientId}&response_type=token&redirect_uri=${redirect}&scope=${scopes}&state=${targetLocation}`
 		}
 	}
 	else{

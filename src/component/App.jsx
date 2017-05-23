@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import Search from './Search';
 import WatchClickOutside from './WatchClickOutside';
+import UserTracks from './UserTracks';
 import {inject, observer} from 'mobx-react';
 import {GeoRequest} from '../other/Requests';
 import injectSheet from 'react-jss';
@@ -31,6 +32,7 @@ const styles = {
 				<WatchClickOutside onClickOutside={this.handleClose}>
 					<Search />
 				</WatchClickOutside>
+				<UserTracks/>
 			</div>
 		);
 	}

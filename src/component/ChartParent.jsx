@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import d3 from 'd3';
 import * as d3 from "d3";
 import mathjs from 'mathjs';
 import {observer, inject} from 'mobx-react';
@@ -7,22 +6,26 @@ import Loading from './Loading'
 import {SearchRequest, GeoRequest, AlbumRequest, AlbumTrackRequest, AnalysisRequest} from '../other/Requests';
 
 
-function drawChart(dat1, datFull){
+function drawChart(dat1, datFull, width){
 	function zoom() {
 		svg.attr("transform", "translate(" + d3.event.transform.x+","+ d3.event.transform.y+ ")scale(" + d3.event.transform.k + ")");
-
 	}
+
+	var zoomCall = d3.zoom().scaleExtent([1, 8]).on("zoom", zoom)
+	
 	let svg = d3.select("svg")
-	const width = 1000, height = 700
+	var height = 700, scale = width/datFull.length
+
 	svg.remove()
 	svg = d3.select("#chart").append("svg")
 		.attr('height',height)
 		.attr('width', width)
 		.append('g')
-		.call(d3.zoom().scaleExtent([1, 8]).on("zoom", zoom)).append("g")
+		.call(zoomCall).append("g") 
+	
 	const arc = d3.arc()
-	    .innerRadius(function(d) {return d.outerradius-d.weight})
-	    .outerRadius(function(d) {return d.outerradius})
+	    .innerRadius(function(d) {return scale*(d.outerradius-d.weight)})
+	    .outerRadius(function(d) {return scale*d.outerradius})
 	    .startAngle(0) //radians
 	    .endAngle(Math.PI)
 	
@@ -40,20 +43,20 @@ function drawChart(dat1, datFull){
 	    .attr("fill", function(d){return d.section})
 		.attr('opacity',function(d){return d.opacity;})
 
-		.attr("transform", function(d) { return "translate("+String(d.startindex+d.outerradius)+",500) rotate(-90)"})
+		.attr("transform", function(d) { return "translate("+String((d.startindex+d.outerradius)*scale)+",400) rotate(-90)"})
 		.attr("class", "arc");
 	
 	svg.selectAll("rect")
 	    .data(datFull)
 	    .enter()
 	    .append("rect")
-		.attr("transform", function(d) { return "translate("+String(d.startindex)+",505) rotate(0)"})
+		.attr("transform", function(d, i) {return "translate("+String(scale*i)+",405) rotate(0)"})
 
-	        .attr("x", function(d) {return d.outerradius-d.weight})
-	        .attr("y", 0)
-	        .attr("width", function(d) {return d.weight/2})
-	     	.attr("height", function(d) {return d.height})
-		.attr("fill", function(d){return d.section});
+	        // .attr("x", function(d) {return d.outerradius-d.weight})
+	        // .attr("y", 0)
+	        .attr("width", 1)
+	     	.attr("height", function(d) {return d.loudness_max*-1})
+		.attr("fill", function(d){return d.section_index % 2 ? 'Red' : 'Black'});
 	}
 
  function average(index, segments){
@@ -109,11 +112,13 @@ function checkBar(segment){
 		super(props);
 		this.state = {
 			loading: false,
-			updateChart: false
+			updateChart: false,
+			windowWidth: window.innerWidth
 		}
 		this.findSegmentPairs = this.findSegmentPairs.bind(this);
 	}
 	componentDidMount(){
+		window.addEventListener("resize", ()=>{this.setState({windowWidth: window.innerWidth}, ()=>{console.log(window.innerWidth);	drawChart(this.props.dataStore.segmentPairs, this.props.dataStore.segmentsFull, window.innerWidth)})});
 		if (this.props.type2 === 'analysis'){
 			this.setState({loading: true}, ()=>{
 				AnalysisRequest(this.props.id, response => {this.props.dataStore.analysisObject = response; console.log(response); this.setState({loading: false}); this.findSegmentPairs() })
@@ -121,6 +126,9 @@ function checkBar(segment){
 		}
 
 	}
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.setState({windowWidth: window.innerWidth}));
+    }
 	componentWillReceiveProps(nextProps){
 		if (this.props.type2 === 'analysis' && nextProps.type2 == 'analysis'){
 			this.setState({loading: true}, ()=>{
@@ -144,8 +152,8 @@ function checkBar(segment){
 			sectionSegments.forEach((e) => {e.section_index = i; segmementPairsArray.push(e);});
 		}
 		// var scale = 1000 / this.props.dataStore.analysisObject.data.track.duration;
-		var scale = 1000 / this.props.dataStore.analysisObject.data.segments.length;
-		
+		// var scale = 1000 / this.props.dataStore.analysisObject.data.segments.length;
+		var scale = 1;
 	    for (let i = 4; i < arr.length-1; i++){
 
 			const window_average = average(i, arr.slice(i-2,i+3));
@@ -169,11 +177,13 @@ function checkBar(segment){
 			// hashTable[window_average.loudness_max.toFixed(0)] = window_average
 				arrSeen.push(window_average);
 		}
-		
-		drawChart(arrReturn, segmentsFull)
+		this.props.dataStore.segmentPairs = arrReturn;
+		this.props.dataStore.segmentsFull = segmentsFull;
+		drawChart(arrReturn, segmentsFull, this.state.windowWidth)
 		
 	}
-	render(){		
+	render(){
+		// console.log(this.state.windowWidth)
 		return(
 			<div>
 				{this.state.loading ? <Loading/> : <div id='chart'></div>}

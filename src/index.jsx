@@ -20,6 +20,7 @@ window.onload = () => {
 	checkAuth()
 	document.body.style.backgroundColor = '#e6e6e6';
 	document.body.style.minHeight = '1000px';
+	document.body.style.overflow = 'hidden';
 }
 ReactDOM.render(
 	<AppContainer>

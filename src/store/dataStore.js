@@ -7,7 +7,11 @@ class dataStore {
 	@observable returnObject = {}
 	@observable returnType = ''
 	@observable selectedObject = {}
-	@observable analysisObject = {}	
+	@observable analysisObject = {}
+	@observable segmentPairs = []
+	@observable segmentsFull = []
+	@observable userTracks = {}
+	
 	constructor(){
 	}
 	@computed get itemArray(){
