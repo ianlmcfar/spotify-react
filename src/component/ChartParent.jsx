@@ -151,30 +151,24 @@ function checkBar(segment){
 			sectionSegments = arr.filter(checkBar,sections[i]);
 			sectionSegments.forEach((e) => {e.section_index = i; segmementPairsArray.push(e);});
 		}
-		// var scale = 1000 / this.props.dataStore.analysisObject.data.track.duration;
-		// var scale = 1000 / this.props.dataStore.analysisObject.data.segments.length;
-		var scale = 1;
-	    for (let i = 4; i < arr.length-1; i++){
-
+		for (let i = 4; i < arr.length-1; i++){
 			const window_average = average(i, arr.slice(i-2,i+3));
-			lastIndex = arrSeen.map(function(obj) {return obj.loudness_max.toFixed(0);}).lastIndexOf(window_average.loudness_max.toFixed(0));
+			lastIndex = arrSeen.map((obj)=>{return obj.loudness_max.toFixed(0);}).lastIndexOf(window_average.loudness_max.toFixed(0));
 			segmentsFull.push(window_average)
 				
-			if (lastIndex != -1 &&
-				isPitchSimilar(arrSeen[lastIndex],window_average)
+			if (lastIndex != -1
+				&&isPitchSimilar(arrSeen[lastIndex],window_average)
 				&& isTimbreSimilar(arrSeen[lastIndex], window_average))
 				{
-					// arrReturn.push({section: arrSeen[lastIndex].section_index % 2 ? 'Red' : 'Black',
-// 						startindex: scale*arrSeen[lastIndex].start,
-// 						outerradius: scale*(window_average.start-arrSeen[lastIndex].start)/2,
-// 						opacity: (window_average.confidence+arrSeen[lastIndex].confidence)/2,
-// 						weight: 1 ,
-// 						height: -1*window_average.loudness_max,
-// 						rotation: "-90"});
-					arrReturn.push({height: -1*arrSeen[lastIndex].loudness_max, section: arrSeen[lastIndex].section_index % 2 ? 'Red' : 'Black', startindex: scale*lastIndex, outerradius: scale*(i-lastIndex)/2, opacity: (window_average.confidence+arrSeen[lastIndex].confidence)/2, weight:  .3, rotation: "-90", startindex: scale*lastIndex});
-					
+					arrReturn.push({height: -1*arrSeen[lastIndex].loudness_max, 
+									section: arrSeen[lastIndex].section_index % 2 ? 'Red' : 'Black',
+									startindex: lastIndex,
+									outerradius: (i-lastIndex)/2,
+									opacity: (window_average.confidence+arrSeen[lastIndex].confidence)/2,
+									weight:  .3,
+									rotation: "-90",
+									startindex: lastIndex});
 				}
-			// hashTable[window_average.loudness_max.toFixed(0)] = window_average
 				arrSeen.push(window_average);
 		}
 		this.props.dataStore.segmentPairs = arrReturn;
