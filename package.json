@@ -23,7 +23,7 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-1": "^6.5.0",
     "css-loader": "^0.26.1",
-    "eslint": "^2.13.1",
+    "eslint": "^6.5.1",
     "eslint-plugin-react": "^5.1.1",
     "loader-utils": "^0.2.16",
     "react-hot-loader": "^3.0.0-beta.2",
